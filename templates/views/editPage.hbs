@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile</title>
+  <!-- Add your stylesheets and other dependencies here -->
+</head>
+
+<body>
+
+  <div class="main-container">
+    <div class="profile-container">
+      <form action="/edit-profile" method="POST" enctype="multipart/form-data">
+        <img class="profile-image" src="{{ user.imagePath }}" alt="Profile Image">
+        <label for="profileImage">Change Profile Picture:</label>
+        <input type="file" id="profileImage" name="profileImage" accept="image/*">
+        
+        <label for="name">Change Name:</label>
+        <input type="text" id="name" name="name" value="{{ user.name }}" required>
+
+        <input type="submit" value="Save Changes">
+      </form>
+      <a href="/user-profile">Cancel</a>
+    </div>
+  </div>
+
+</body>
+
+</html>

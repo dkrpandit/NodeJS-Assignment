@@ -14,6 +14,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      flex-direction: column;
     }
 
     form {
@@ -48,7 +49,8 @@
   </style>
 </head>
 <body>
-<form action="/registration" method="POST">
+  <h1>Registration</h1>
+<form action="/registration" method="POST" enctype="multipart/form-data">
     <label for="profile-image">Profile Image:</label>
     <input type="file" id="profile-image" name="profile-image" accept="image/*">
 
