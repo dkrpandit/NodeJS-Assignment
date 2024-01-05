@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    {{> css}}
+</head>
+<body>
+    <h1>Welcome, Admin!</h1>
+
+    <h2>User Data</h2>
+    <table border="1">
+        <tr>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Name</th>
+            <th>Profile Image</th>
+            <th>Action</th>
+        </tr>
+        {{#each users}}
+        <tr>
+            <td>{{this.email}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{this.name}}</td>
+            <td>
+                {{#if this.imagePath}}
+                <img src="{{this.imagePath}}" alt="{{this.name}}" style="max-width: 50px; max-height: 50px;">
+                {{else}}
+                No Image
+                {{/if}}
+            </td>
+            <td>
+                <form action="/admin/delete/{{this._id}}" method="POST">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {{/each}}
+    </table>
+
+</body>
+</html>

@@ -40,15 +40,76 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
+    res.render("index");
+});
+
+app.get("/login",(req, res) => {
     res.render("login");
 });
+
 
 app.get("/registration", (req, res) => {
     res.render("registration");
 });
 
-app.get("/login", (req, res) => {
-    res.render("login");
+// ... (your existing code)
+
+app.get("/admin", async (req, res) => {
+    try {
+        const users = await Registrations.find({});
+        res.render("admin", { users });
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.get("/admin/edit/:id", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const user = await Registrations.findById(userId);
+
+        if (!user) {
+            return res.status(404).send("User not found.");
+        }
+
+        res.render("editUser", { user });
+    } catch (error) {
+        console.error("Error fetching user data for edit:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.post("/admin/edit/:id", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const updatedUser = await Registrations.findByIdAndUpdate(userId, req.body, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).send("User not found for editing.");
+        }
+
+        res.redirect("/admin");
+    } catch (error) {
+        console.error("Error updating user data:", error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.post("/admin/delete/:id", async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const deletedUser = await Registrations.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).send("User not found for deletion.");
+        }
+
+        res.redirect("/admin");
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 
 // Handle registration with image upload
@@ -122,9 +183,7 @@ app.post("/login", async (req, res) => {
         }
 
         // Password is valid, user is authenticated
-        // You may set up a session or generate a token for further authentication
 
-        // res.status(200).send("Login successful!"); // You can customize the response as needed
         res.status(200).render("user", { user });
         
     } catch (error) {
